@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: CarSharing
+  session:
+    jdbc:
+      schema: classpath:org/springframework/session/jdbc/schema-postgresql.sql
+      initialize-schema: always
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 231514
+  jpa:
+    hibernate:
+      ddl-auto: update

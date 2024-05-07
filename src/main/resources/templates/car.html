@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о машине</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Дополнительные стили -->
+    <style>
+        .rent-info {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{/header :: header}"></header>
+<main class="container">
+    <div class="rent-info">
+        <h2>Информация о машине</h2>
+        <p><strong>Бренд:</strong> <span th:text="${car.brand}"></span></p>
+        <p><strong>Модель:</strong> <span th:text="${car.model}"></span></p>
+        <p><strong>Год выпуска:</strong> <span th:text="${car.year}"></span></p>
+        <p><strong>Цвет:</strong> <span th:text="${car.color}"></span></p>
+    </div>
+
+    <div class="rent-info">
+        <h2>Статистика аренды</h2>
+        <p>Количество аренд: <span th:text="${car.rents.size()}"></span></p>
+    </div>
+
+    <div class="rent-info">
+        <h2>Пользователи, бравшие эту машину в аренду</h2>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="rent : ${car.rents}">
+                <span th:text="${rent.user.username}"></span> -
+                <span th:text="${rent.getFormattedStartDate()}"></span> до
+                <span th:text="${rent.getFormattedFinishDate()}"></span> (продолжительность:
+                <span th:text="${rent.getRentDurationInSeconds()}"></span> секунд)
+            </li>
+        </ul>
+    </div>
+</main>
+
+<!-- Подключение Bootstrap JS (необязательно, если не используется функциональность JS) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

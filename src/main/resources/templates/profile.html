@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+    <!-- Подключение Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Дополнительные стили -->
+    <style>
+        .content {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{/header :: header}"></header>
+<main class="container">
+    <div class="content">
+        <a href="/logout" class="btn btn-danger mb-3">Выйти</a>
+        <h2>Аренды пользователя</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Начальная дата</th>
+                <th>Конечная дата</th>
+                <th>Продолжительность</th>
+                <th>Начальное местоположение</th>
+                <th>Конечное местоположение</th>
+                <th>Автомобиль</th>
+                <th>Статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rent : ${rentsWithDescriptions}">
+                <td th:text="${rent.rent.getFormattedStartDate()}"></td>
+                <td th:text="${rent.rent.getFormattedFinishDate()}"></td>
+                <td th:text="${rent.rent.getRentDurationInSeconds()}"></td>
+                <td th:text="${rent.rent.startLocation}"></td>
+                <td th:text="${rent.rent.finishLocation}"></td>
+                <td><a th:href="@{/cars/{carId}(carId=${rent.rent.car.id})}" th:text="${rent.carDescription}"></a></td>
+                <td>
+                    <span th:if="${rent.rent.getFormattedFinishDate() == null}">
+                        <a th:href="@{'/rents?carId=' + ${rent.rent.car.id}}" class="btn btn-success">Активна</a>
+                    </span>
+                    <span th:unless="${rent.rent.getFormattedFinishDate() == null}">
+                        <a th:href="@{'/rents/finish?rentId=' + ${rent.rent.id}}" class="btn btn-secondary">Закончена</a>
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<!-- Подключение Bootstrap JS (необязательно, если не используется функциональность JS) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

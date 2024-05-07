@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Автомобили</title>
+    <!-- Подключаем Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Настройка отступов для формы */
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{/header :: header}"></header>
+<main class="container mt-5">
+    <h1 class="mb-4">Автомобили</h1>
+    <!-- Ссылка на сортировку -->
+    <a class="btn btn-primary mb-3" th:href="@{/cars/sorted}">Сортировать по году</a>
+    <!-- Форма для фильтрации -->
+    <form class="mb-3" action="/cars/filtered" method="get">
+        <div class="row g-3 align-items-end">
+            <div class="col-auto">
+                <label for="filterBy" class="col-form-label">Фильтровать по:</label>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" name="filteredBy" id="filterBy">
+                    <option value="brand">Марке</option>
+                    <option value="model">Модели</option>
+                    <option value="year">Году</option>
+                    <option value="color">Цвету</option>
+                    <option value="location">Местоположению</option>
+                    <option value="available">Доступности</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" name="value" placeholder="Значение">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            </div>
+        </div>
+    </form>
+    <!-- Контейнер для таблицы -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Марка</th>
+                <th>Модель</th>
+                <th>Год</th>
+                <th>Цвет</th>
+                <th>Доступность</th>
+                <th>Местоположение</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Используем классы Bootstrap для стилизации таблицы -->
+            <tr th:each="car : ${cars}">
+                <td th:text="${car.brand}">Brand</td>
+                <td th:text="${car.model}">Model</td>
+                <td th:text="${car.year}">Year</td>
+                <td th:text="${car.color}">Color</td>
+                <td th:text="${car.available} ? 'Доступна' : 'Занята'">Available</td>
+                <td th:text="${car.location}">Location</td>
+                <td>
+                    <span th:if="${car.available}">
+                        <a class="btn btn-success btn-sm" th:href="@{/rents(carId=${car.id})}">Арендовать</a>
+                    </span>
+                    <span th:unless="${car.available}" class="btn btn-secondary btn-sm">Ожидать</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
